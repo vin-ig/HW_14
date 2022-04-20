@@ -1,7 +1,8 @@
 import sqlite3
+import json
 
 
-def get_move_by_title(name: str) -> dict:
+def get_movie_by_title(name: str) -> dict:
 	"""Возвращает новейший фильм по названию"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
@@ -20,7 +21,7 @@ def get_move_by_title(name: str) -> dict:
 	return dict(zip(keys, values))
 
 
-def get_moves_by_years(after: int, before: int) -> list:
+def get_movies_by_years(after: int, before: int) -> list:
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -32,17 +33,17 @@ def get_moves_by_years(after: int, before: int) -> list:
 					LIMIT 100
 					'''
 	cursor.execute(sqlite_query)
-	moves = cursor.fetchall()
+	movies = cursor.fetchall()
 
 	result = []
-	for move in moves:
+	for movie in movies:
 		keys = ('title', 'release_year')
-		result.append(dict(zip(keys, move)))
+		result.append(dict(zip(keys, movie)))
 
 	return result
 
 
-def get_moves_by_rating(*ratings: tuple) -> list:
+def get_movies_by_rating(*ratings: tuple) -> list:
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -53,17 +54,17 @@ def get_moves_by_rating(*ratings: tuple) -> list:
 					LIMIT 100
 					'''
 	cursor.execute(sqlite_query)
-	moves = cursor.fetchall()
+	movies = cursor.fetchall()
 
 	result = []
-	for move in moves:
+	for movie in movies:
 		keys = ('title', 'rating', 'description')
-		result.append(dict(zip(keys, move)))
+		result.append(dict(zip(keys, movie)))
 
 	return result
 
 
-def get_moves_by_genre(genre: str) -> list:
+def get_movies_by_genre(genre: str) -> list:
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -74,17 +75,17 @@ def get_moves_by_genre(genre: str) -> list:
 					ORDER BY release_year DESC
 					'''
 	cursor.execute(sqlite_query)
-	moves = cursor.fetchmany(10)
+	movies = cursor.fetchmany(10)
 
 	result = []
-	for move in moves:
+	for movie in movies:
 		keys = ('title', 'description')
-		result.append(dict(zip(keys, move)))
+		result.append(dict(zip(keys, movie)))
 
 	return result
 
 
-def get_moves_by_actors(act_1: str, act_2: str) -> list:
+def get_movies_by_actors(act_1: str, act_2: str) -> list:
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -107,3 +108,29 @@ def get_moves_by_actors(act_1: str, act_2: str) -> list:
 			actors_set.add(actor)
 
 	return list(actors_set)
+
+
+def get_movies_json(movie_type: str, year: int, genre: str) -> list:
+	with sqlite3.connect('netflix.db') as connection:
+		cursor = connection.cursor()
+
+	sqlite_query = f'''
+					SELECT title, description
+					FROM netflix
+					WHERE type = '{movie_type}'
+					AND release_year = {year}
+					AND listed_in LIKE '%{genre}%'
+					'''
+	cursor.execute(sqlite_query)
+	movies = cursor.fetchall()
+
+	# Допилить отсюда
+	result = []
+	for movie in movies:
+		result.append(json.dumps(movie))
+
+	# print(*result, sep='\n')
+	print(result)
+
+
+# get_movies_json('TV Show', 2002, 'roman')

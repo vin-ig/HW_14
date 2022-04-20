@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск по БД Netflix</title>
+    <link href="../static/style.css" rel="stylesheet">
+</head>
+<body>
+<h2>Выберите варианты поиска:</h2><br>
+
+<h3>По названию</h3>
+    <p>Будет найден самый свежий фильм, удовлетворяющий условию поиска</p>
+    <form action="/by_title/">
+        <input type="text" name="title" placeholder="Название фильма...">
+        <input type="submit" value="Поиск">
+    </form>
+<hr>
+
+<h3>По диапазону лет выпуска</h3>
+    <p>Выберете, между каким годами создания фильма выполнить поиск</p>
+    <form action="/between_years/">
+        <input type="text" name="after" placeholder="От...">
+        <input type="text" name="before" placeholder="До...">
+        <input type="submit" value="Поиск">
+    </form>
+<hr>
+
+<h3>По возрастным ограничениям</h3>
+    <p>Введите название фильма и выберите возрастные ограничения</p>
+   <form action="/by_rating/">
+        <input type="radio" name=children value=true> Для детей
+        <input type="radio" name=family value=true> Для семейного просмотра
+        <input type="radio" name=adult value=true> Для взрослых
+        <br><br>
+        <input type="text" name="title" placeholder="Название фильма...">
+        <input type="submit" value="Поиск">
+    </form>
+<hr>
+
+<h3>По жанрам</h3>
+<hr>
+
+</body>
+</html>
