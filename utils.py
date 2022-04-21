@@ -45,7 +45,7 @@ def get_movies_by_years(from_y: int, to_y: int) -> list:
 
 
 def get_movies_by_rating(*ratings: tuple) -> list:
-	"""Возвщает фильмы по возрастным ограничениям"""
+	"""Возвращает фильмы по возрастным ограничениям"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -118,8 +118,8 @@ def get_movies_by_actors(actors: tuple) -> list:
 	return list(actors_set)
 
 
-def get_movies_json(movie_type: str, year: int, genre: str) -> list:
-	"""Возращает json с фильмами по типу, году выпуска, жанру"""
+def get_movies_json(movie_type: str, year: int, genre: str) -> str:
+	"""Возвращает json с фильмами по типу, году выпуска, жанру"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
