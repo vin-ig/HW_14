@@ -53,7 +53,7 @@ def by_rating():
 
 
 @app.route('/genre/')
-def by_genre(genre):
+def by_genre():
 	"""Поиск по жанру"""
 	genre = request.args.get('genre')
 	movies = get_movies_by_genre(genre)
