@@ -6,14 +6,19 @@
     <link href="../static/style.css" rel="stylesheet">
 </head>
 <body>
+
+<div class="home">
+    <a href="/"><input type="button" value="На главную"></a>
+</div>
+
 <h2>По запросу "{{title}}" найдено:</h2>
 <br>
 
-<p>Название: {{movies.title}}</p>
-<p>Страна: {{movies.county}}</p>
-<p>Год выпуска: {{movies.release_year}}</p>
-<p>Жанр: {{movies.listed_in}}</p>
-<p>Описание: {{movies.description}}</p>
-	
+<p>Название: {{movie.title}}</p>
+<p>Страна: {{movie.country}}</p>
+<p>Год выпуска: {{movie.release_year}}</p>
+<p>Жанр: {{movie.genre}}</p>
+<p>Описание: {{movie.description}}</p>
+
 </body>
 </html>
