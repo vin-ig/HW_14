@@ -21,14 +21,15 @@ def get_movie_by_title(name: str) -> dict:
 	return dict(zip(keys, values))
 
 
-def get_movies_by_years(after: int, before: int) -> list:
+def get_movies_by_years(from_y: int, to_y: int) -> list:
+	"""Возвращает фильмы в диапазоне лет выпуска"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
 	sqlite_query = f'''
 					SELECT title, release_year
 					FROM netflix
-					WHERE release_year BETWEEN {after} and {before}
+					WHERE release_year BETWEEN {from_y} and {to_y}
 					ORDER BY release_year
 					LIMIT 100
 					'''
@@ -44,6 +45,7 @@ def get_movies_by_years(after: int, before: int) -> list:
 
 
 def get_movies_by_rating(*ratings: tuple) -> list:
+	"""Возвщает фильмы по возрастным ограничениям"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -65,11 +67,12 @@ def get_movies_by_rating(*ratings: tuple) -> list:
 
 
 def get_movies_by_genre(genre: str) -> list:
+	"""Возвращает фильмы по жанру"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
 	sqlite_query = f'''
-					SELECT title, description
+					SELECT title, listed_in, description
 					FROM netflix
 					WHERE listed_in LIKE '%{genre}%'
 					ORDER BY release_year DESC
@@ -79,13 +82,16 @@ def get_movies_by_genre(genre: str) -> list:
 
 	result = []
 	for movie in movies:
-		keys = ('title', 'description')
+		keys = ('title', 'genre', 'description')
 		result.append(dict(zip(keys, movie)))
 
 	return result
 
 
-def get_movies_by_actors(act_1: str, act_2: str) -> list:
+def get_movies_by_actors(actors: tuple) -> list:
+	"""Возвращает актеров, сыгравших с указанными более 2 раз"""
+	act_1, act_2 = actors
+	
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
@@ -98,10 +104,12 @@ def get_movies_by_actors(act_1: str, act_2: str) -> list:
 	cursor.execute(sqlite_query)
 	cast = cursor.fetchall()
 
+	# Создаем список всех актеров, сыгравших с указанными
 	actors_list = []
 	for actors in cast:
 		actors_list.extend(actors[0].split(', '))
 
+	# Выводим актеров, удовлетворяющих условию
 	actors_set = set()
 	for actor in actors_list:
 		if actors_list.count(actor) > 2 and actor.lower() not in {act_1.lower(), act_2.lower()}:
@@ -111,7 +119,8 @@ def get_movies_by_actors(act_1: str, act_2: str) -> list:
 
 
 def get_movies_json(movie_type: str, year: int, genre: str) -> list:
-	with sqlite3.connect('netflix.db') as connection:
+	"""Возращает json с фильмами по типу, году выпуска, жанру"""
+	with sqlite3.connect('D:/Temp/HW_14/netflix.db') as connection:
 		cursor = connection.cursor()
 
 	sqlite_query = f'''
@@ -124,13 +133,12 @@ def get_movies_json(movie_type: str, year: int, genre: str) -> list:
 	cursor.execute(sqlite_query)
 	movies = cursor.fetchall()
 
-	# Допилить отсюда
 	result = []
 	for movie in movies:
-		result.append(json.dumps(movie))
+		keys = ('title', 'description')
+		result.append(dict(zip(keys, movie)))
 
-	# print(*result, sep='\n')
-	print(result)
+	result = json.dumps(result, indent=2)
 
-
-# get_movies_json('TV Show', 2002, 'roman')
+	return result
+	

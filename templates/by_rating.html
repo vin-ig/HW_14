@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Фильтр по возрастным ограничениям</title>
+    <link href="../static/style.css" rel="stylesheet">
+</head>
+<body>
+<h2>Возрастные ограничения: {{rating}}</h2>
+
+<br>
+{% for movie in movies %}
+	<p>
+		Название: {{movie.title}}<br>
+		Ограничения: {{movie.rating}}<br>
+		Описание: {{movie.description}}
+	</p>
+{% endfor %}
+</body>
+</html>

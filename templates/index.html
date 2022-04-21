@@ -6,7 +6,8 @@
     <link href="../static/style.css" rel="stylesheet">
 </head>
 <body>
-<h2>Выберите варианты поиска:</h2><br>
+<h2>Выберите варианты поиска:</h2>
+<br>
 
 <h3>По названию</h3>
     <p>Будет найден самый свежий фильм, удовлетворяющий условию поиска</p>
@@ -26,18 +27,44 @@
 <hr>
 
 <h3>По возрастным ограничениям</h3>
-    <p>Введите название фильма и выберите возрастные ограничения</p>
+    <p>Выберите возрастные ограничения</p>
    <form action="/by_rating/">
-        <input type="radio" name=children value=true> Для детей
-        <input type="radio" name=family value=true> Для семейного просмотра
-        <input type="radio" name=adult value=true> Для взрослых
-        <br><br>
-        <input type="text" name="title" placeholder="Название фильма...">
+        <input type="radio" name="group" value="family" checked> Для семейного просмотра<br>
+        <input type="radio" name="group" value="children"> Для детей<br>
+        <input type="radio" name="group" value="adult"> Для взрослых<br>
+        <input type="radio" name="group" value="18+"> Для взрослых (18+)<br>
+        <br>
         <input type="submit" value="Поиск">
     </form>
 <hr>
 
 <h3>По жанрам</h3>
+	<p>Введите жанр для выполнения поиска</p>
+    <form action="/by_genre/">
+        <input type="text" name="genre" placeholder="Жанр...">
+        <input type="submit" value="Поиск">
+    </form>
+<hr>
+
+<h3>По актерам</h3>
+	<p>Введите двух актеров. Будет выведен список актеров, сыгравших с ними более чем в двух фильмах</p>
+    <form action="/by_actors/">
+        <input type="text" name="act_1" placeholder="Актер...">
+        <input type="text" name="act_2" placeholder="Актер...">
+        <input type="submit" value="Поиск">
+    </form>
+<hr>
+
+<h3>По типу, году выпуска, жанру</h3>
+	<p>Выберите тип, введите год выпуска и жанр для выполнения поиска. Вывод будет представлен в формате JSON</p>
+    <form action="/movie_json/">
+        <input type="radio" name="type" value="Movie" checked> Фильм
+        <input type="radio" name="type" value="TV Show"> Сериал<br>
+		<br>
+		<input type="text" name="year" placeholder="Год выпуска...">
+        <input type="text" name="genre" placeholder="Жанр...">
+        <input type="submit" value="Поиск">
+    </form>
 <hr>
 
 </body>
