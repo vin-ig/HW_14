@@ -47,7 +47,7 @@ def get_movies_by_years(from_y: int, to_y: int) -> list:
 def get_movies_by_rating(group: str) -> list:
 	"""Возвращает фильмы по возрастным ограничениям"""
 	if group == 'children':
-		rating = 'G', 'G'
+		rating = 'G', 'G'  # Пришлось продублировать, т.к. не выполняется поиск в кортеже из одного элемента
 	elif group == 'family':
 		rating = 'G', 'PG', 'PG-13'
 	elif group == 'adult':
@@ -94,9 +94,9 @@ def get_movies_by_genre(genre: str) -> list:
 	return result
 
 
-def get_movies_by_actors(actors: tuple) -> list:
+def get_movies_by_actors(query_actors: tuple) -> list:
 	"""Возвращает актеров, сыгравших с указанными более 2 раз"""
-	act_1, act_2 = actors
+	act_1, act_2 = query_actors
 	
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
@@ -144,6 +144,4 @@ def get_movies_json(movie_type: str, year: int, genre: str) -> str:
 		keys = ('title', 'description')
 		result.append(dict(zip(keys, movie)))
 
-	result = json.dumps(result, indent=2)
-
-	return result
+	return json.dumps(result, indent=2)
