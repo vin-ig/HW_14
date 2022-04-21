@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from utils import *
 
 app = Flask(__name__)
@@ -18,30 +18,24 @@ def by_title():
 	return render_template('by_title.html', movie=movie, title=title)
 
 
-@app.route('/movie/year-to-year/')
+@app.route('/between_years/')
 def between_years():
 	"""Поиск в диапазоне лет выпуска"""
 	years = request.args.get('from_y'), request.args.get('to_y')
 	year_1, year_2 = years 
 	
-	# if not isinstance(year_1, int) or not isinstance(year_2, int):
-	# 	print('type')
-	# 	raise TypeError
-	# elif year_1 > year_2:
-	# 	raise ValueError
-		
 	try:
 		year_1, year_2 = int(year_1), int(year_2)
-		movies = get_movies_by_years(year_1, year_2)
-		return render_template('between_years.html', movies=movies, years=years)
-	except TypeError:
+	except ValueError:
 		error = 'Нужно ввести целые числа'
 		return render_template('between_years.html', error=error)
-	except ValueError:
+
+	if year_1 < year_2:
+		movies = get_movies_by_years(year_1, year_2)
+		return render_template('between_years.html', movies=movies, years=years)
+	else:
 		error = 'Неверный диапазон'
 		return render_template('between_years.html', error=error)
-	
-
 
 
 @app.route('/rating/')
@@ -62,6 +56,7 @@ def by_genre():
 
 @app.route('/actors/')
 def by_actors():
+	"""Поиск по двум актерам"""
 	actors = request.args.get('act_1'), request.args.get('act_2')
 	actors_list = get_movies_by_actors(actors)
 
@@ -70,6 +65,7 @@ def by_actors():
 
 @app.route('/movie_json/')
 def movie_json():
+	"""Вывод фильмов в формате JSON"""
 	type_ = request.args.get('type')
 	year = request.args.get('year')
 	genre = request.args.get('genre')
@@ -84,4 +80,4 @@ def movie_json():
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run()
