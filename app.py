@@ -21,41 +21,35 @@ def by_title():
 @app.route('/movie/year-to-year/')
 def between_years():
 	"""Поиск в диапазоне лет выпуска"""
-	years = request.args.get('year_1'), request.args.get('year_2')
+	years = request.args.get('from_y'), request.args.get('to_y')
 	year_1, year_2 = years 
 	
-	if not isinstance(year_1, int) or not isinstance(year_2, int):
-		raise TypeError
-	elif year_1 > year_2:
-		raise ValueError
+	# if not isinstance(year_1, int) or not isinstance(year_2, int):
+	# 	print('type')
+	# 	raise TypeError
+	# elif year_1 > year_2:
+	# 	raise ValueError
 		
 	try:
 		year_1, year_2 = int(year_1), int(year_2)
 		movies = get_movies_by_years(year_1, year_2)
+		return render_template('between_years.html', movies=movies, years=years)
 	except TypeError:
 		error = 'Нужно ввести целые числа'
+		return render_template('between_years.html', error=error)
 	except ValueError:
 		error = 'Неверный диапазон'
+		return render_template('between_years.html', error=error)
 	
-	return render_template('between_years.html', movies=movies, error=error, years=years)
+
 
 
 @app.route('/rating/')
 def by_rating():
-	"""Поиск по рейтингу"""
+	"""Фильтр по возрастным ограничениям"""
 	group = request.args.get('group')
-
-	if group == 'children':
-		rating = 'G'
-	elif group == 'family':
-		rating = 'G', 'PG', 'PG-13'
-	elif group == 'adult':
-		rating = 'R', 'NC-17'
-	else:
-		return render_template('strawberry.html')
-
-	movies = get_movies_by_rating(rating)
-	return render_template('by_rating.html', movies=movies, rating=rating)
+	movies = get_movies_by_rating(group)
+	return render_template('by_rating.html', movies=movies, group=group)
 
 
 @app.route('/genre/')
@@ -64,6 +58,7 @@ def by_genre(genre):
 	genre = request.args.get('genre')
 	movies = get_movies_by_genre(genre)
 	return render_template('by_genre.html', movies=movies, genre=genre)
+
 
 @app.route('/actors/')
 def by_actors():

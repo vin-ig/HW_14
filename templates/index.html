@@ -19,20 +19,19 @@
 
 <h3>По диапазону лет выпуска</h3>
     <p>Выберете, между каким годами создания фильма выполнить поиск</p>
-    <form action="/between_years/">
-        <input type="text" name="after" placeholder="От...">
-        <input type="text" name="before" placeholder="До...">
+    <form action="/movie/year-to-year/">
+        <input type="text" name="from_y" placeholder="От...">
+        <input type="text" name="to_y" placeholder="До...">
         <input type="submit" value="Поиск">
     </form>
 <hr>
 
 <h3>По возрастным ограничениям</h3>
     <p>Выберите возрастные ограничения</p>
-   <form action="/by_rating/">
+   <form action="/rating/">
         <input type="radio" name="group" value="family" checked> Для семейного просмотра<br>
         <input type="radio" name="group" value="children"> Для детей<br>
         <input type="radio" name="group" value="adult"> Для взрослых<br>
-        <input type="radio" name="group" value="18+"> Для взрослых (18+)<br>
         <br>
         <input type="submit" value="Поиск">
     </form>
@@ -40,7 +39,7 @@
 
 <h3>По жанрам</h3>
 	<p>Введите жанр для выполнения поиска</p>
-    <form action="/by_genre/">
+    <form action="/genre/">
         <input type="text" name="genre" placeholder="Жанр...">
         <input type="submit" value="Поиск">
     </form>
@@ -48,7 +47,7 @@
 
 <h3>По актерам</h3>
 	<p>Введите двух актеров. Будет выведен список актеров, сыгравших с ними более чем в двух фильмах</p>
-    <form action="/by_actors/">
+    <form action="/actors/">
         <input type="text" name="act_1" placeholder="Актер...">
         <input type="text" name="act_2" placeholder="Актер...">
         <input type="submit" value="Поиск">

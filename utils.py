@@ -44,15 +44,21 @@ def get_movies_by_years(from_y: int, to_y: int) -> list:
 	return result
 
 
-def get_movies_by_rating(*ratings: tuple) -> list:
+def get_movies_by_rating(group: str) -> list:
 	"""Возвращает фильмы по возрастным ограничениям"""
+	if group == 'children':
+		rating = 'G', 'G'
+	elif group == 'family':
+		rating = 'G', 'PG', 'PG-13'
+	elif group == 'adult':
+		rating = 'R', 'NC-17'
+
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
-
 	sqlite_query = f'''
 					SELECT title, rating, description
 					FROM netflix
-					WHERE rating IN {ratings}
+					WHERE rating IN {rating}
 					LIMIT 100
 					'''
 	cursor.execute(sqlite_query)
@@ -141,4 +147,3 @@ def get_movies_json(movie_type: str, year: int, genre: str) -> str:
 	result = json.dumps(result, indent=2)
 
 	return result
-	
