@@ -2,7 +2,7 @@ import sqlite3
 import json
 
 
-def get_movie_by_title(name: str) -> dict:
+def get_movie_by_title(name: str) -> dict | None:
 	"""Возвращает новейший фильм по названию"""
 	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
@@ -18,7 +18,10 @@ def get_movie_by_title(name: str) -> dict:
 	values = cursor.fetchone()
 	keys = ('title', 'country', 'release_year', 'genre', 'description')
 
-	return dict(zip(keys, values))
+	try:
+		return dict(zip(keys, values))
+	except TypeError:
+		return None
 
 
 def get_movies_by_years(from_y: int, to_y: int) -> list:
