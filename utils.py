@@ -120,7 +120,7 @@ def get_movies_by_actors(actors: tuple) -> list:
 
 def get_movies_json(movie_type: str, year: int, genre: str) -> list:
 	"""Возращает json с фильмами по типу, году выпуска, жанру"""
-	with sqlite3.connect('D:/Temp/HW_14/netflix.db') as connection:
+	with sqlite3.connect('netflix.db') as connection:
 		cursor = connection.cursor()
 
 	sqlite_query = f'''
