@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from utils import *
 
 app = Flask(__name__)
@@ -77,10 +77,10 @@ def movie_json():
 	try:
 		year = int(year)
 		movies = get_movies_json(type_, year, genre)
-	except TypeError:
+		return render_template('movie_json.html', movies=movies, type=type_, year=year, genre=genre)
+	except ValueError:
 		error = 'Неверно введен год'
-
-	return render_template('movie_json.html', movies=movies, type=type_, year=year, genre=genre, error=error)
+		return render_template('movie_json.html', error=error)
 
 
 if __name__ == '__main__':

@@ -11,14 +11,17 @@
 </div>
 
 <body>
-<h3>Тип: {{type}}</h3>
-<h3>Год выпуска: {{year}}</h3>
-<h3>Жанр: {{genre}}</h3>
-<h4>Вывод данных в формате JSON</h4>
+{% if not error %}
+    <h3>Тип: {{type}}</h3>
+    <h3>Год выпуска: {{year}}</h3>
+    <h3>Жанр: {{genre}}</h3>
+    <h4>Вывод данных в формате JSON</h4>
 
-<br>
+    <br>
 
-{{movies}}
-
+    {{movies}}
+{% else %}
+    <h3>{{error}}</h3>
+{% endif %}
 </body>
 </html>
